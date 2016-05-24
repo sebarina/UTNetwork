@@ -1,14 +1,14 @@
 Pod::Spec.new do |s|
   s.name         = "UTNetwork"
   s.version      = "0.0.1"
-  s.summary      = "A short description of UTNetwork."
+  s.summary      = "Network request library based on AFNetworking"
   s.homepage     = "http://github.com/sebarina/UTNetwork"
-  s.license      = "MIT (example)"
+  s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author             = { "sebarina xu" => "sebarinaxu@gmail.com" }
   s.ios.deployment_target = "8.0"
   
 
-  s.source       = { :git => "http://EXAMPLE/UTNetwork.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/sebarina/UTNetwork.git", :tag => "0.0.1" }
 
   s.source_files  = "Source/**/*"
 
