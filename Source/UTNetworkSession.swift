@@ -15,6 +15,19 @@ public typealias API_Progress_Block = (NSProgress) -> Void
 
 typealias API_Log_Block = (AnyObject) -> Void
 
+public enum UTNetworkStatus: Int {
+    case Unknown
+    case NotReachable
+    case ReachableViaWWAN
+    case ReachableViaWiFi
+}
+
+public enum UTNetworkSecurityMode {
+    case None
+    case PublicKey
+    case Certificate
+}
+
 
 public class UTNetworkSession {
     
@@ -52,6 +65,42 @@ public class UTNetworkSession {
         configuration.networkServiceType = serviceType
         manager = AFHTTPSessionManager(baseURL: NSURL(string: baseUrl), sessionConfiguration: configuration)
         
+    }
+    
+    public func securityPolicy(mode: UTNetworkSecurityMode) {
+        var pinningMode : AFSSLPinningMode
+        switch  mode {
+        case .Certificate:
+            pinningMode = AFSSLPinningMode.Certificate
+            break
+        case .PublicKey:
+            pinningMode = AFSSLPinningMode.PublicKey
+        default:
+            pinningMode = AFSSLPinningMode.None
+        }
+        
+        manager.securityPolicy = AFSecurityPolicy(pinningMode: pinningMode)
+    }
+    
+    public func securityPolicy(mode: UTNetworkSecurityMode, pinnedCertificates: Set<NSData>) {
+        var pinningMode : AFSSLPinningMode
+        switch  mode {
+        case .Certificate:
+            pinningMode = AFSSLPinningMode.Certificate
+            break
+        case .PublicKey:
+            pinningMode = AFSSLPinningMode.PublicKey
+        default:
+            pinningMode = AFSSLPinningMode.None
+        }
+        
+        manager.securityPolicy = AFSecurityPolicy(pinningMode: pinningMode, withPinnedCertificates: pinnedCertificates)
+    }
+    
+    
+    public class func getNetworkStatus() -> UTNetworkStatus {
+        let status = AFNetworkReachabilityManager.sharedManager().networkReachabilityStatus
+        return UTNetworkStatus(rawValue: status.rawValue) ?? .Unknown
     }
     
 
